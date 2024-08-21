@@ -1,0 +1,70 @@
+<div class="flex items-center justify-center min-h-screen bg-gray-100">
+  <div class="w-full max-w-md p-8 bg-white shadow-md rounded-lg relative">
+    <!-- Título -->
+    <div class="text-3xl font-bold text-gray-700">Iniciar sesión</div>
+
+    <!-- Descripción -->
+    <div class="mb-6 mt-3 flex items-center gap-2">
+      <p class="text-gray-600 text-sm font-semibold">Bienvenido de vuelta</p>
+    </div>
+
+    <!-- Formulario -->
+    <form [formGroup]="signInForm">
+      <!-- Usuario -->
+      <div class="mb-4">
+        <label for="username" class="block text-sm font-medium text-gray-700">Usuario</label>
+        <input type="text" id="username" name="username" required [formControlName]="'username'"
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          placeholder="Ingrese su usuario">
+      </div>
+
+      <div class="mb-6">
+        <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+        <div class="relative">
+          <input [type]="showPassword ? 'text' : 'password'" id="password" name="password" required
+            [formControlName]="'password'"
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm pr-10"
+            placeholder="Ingrese su contraseña">
+          <!-- Botón para ver la contraseña -->
+          <button type="button" (click)="togglePasswordVisibility()"
+            class="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            @if (showPassword) {
+            <ng-icon name="heroEyeSlash" />
+            }@else {
+            <ng-icon name="heroEye" />
+            }
+          </button>
+        </div>
+      </div>
+
+
+      <!-- Recordarme -->
+      <div class="flex items-center mb-4">
+        <input type="checkbox" id="remember" name="remember" [formControlName]="'rememberMe'"
+          class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded cursor-pointer">
+        <label for="remember" class="ml-2 block text-sm text-gray-900 select-none cursor-pointer">Recordarme</label>
+      </div>
+
+      <!-- Botón de Iniciar sesión -->
+      <div>
+        <button (click)="signIn()" type="button"
+          class="w-full bg-indigo-600 text-white py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+          Iniciar sesión
+        </button>
+      </div>
+
+      <!-- Enlace para registrarse -->
+      <div class="mt-4 text-center flex justify-center gap-2">
+
+        ¿No tienes una cuenta?
+        <div class="flex justify-center items-center gap-1">
+          <a routerLink="/sign-up"
+            class="font-medium text-indigo-600 hover:text-indigo-500 flex items-center justify-center">
+            Regístrate
+          </a>
+          <ng-icon name="heroArrowUpRight" class="text-indigo-600" size="10px" />
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
