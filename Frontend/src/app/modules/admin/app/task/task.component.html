@@ -1,0 +1,97 @@
+<div class="container mx-auto max-w-5xl bg-white p-6 rounded-lg shadow-md">
+  <app-alert #alertComponent></app-alert>
+  <!-- Formulario de nueva tarea -->
+  <div class="mb-8">
+    <h2 class="text-2xl font-bold mb-4 text-gray-700">
+      @if (updateTask) {
+      <span>Editar Tarea</span>
+      }@else {
+      <span> Agregar Nueva Tarea</span>
+      }
+    </h2>
+    <form class="flex flex-col gap-4" [formGroup]="taskInForm" #taskInNgForm="ngForm">
+      <!-- Contenedor para input y select en una línea -->
+      <div class="flex gap-4">
+        <input type="text" name="name" placeholder="Nombre de la tarea"
+          class="flex-1 border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          required [formControlName]="'Name'">
+
+        <select name="type"
+          class="flex-1 border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          required [formControlName]="'type'">
+          <option value="" disabled selected>Seleccionar tipo</option>
+          <option value="personal">Personal</option>
+          <option value="work">Trabajo</option>
+          <option value="other">Otro</option>
+        </select>
+      </div>
+      <textarea name="description" placeholder="Descripción de la tarea"
+        class="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
+        rows="4" required [formControlName]="'Description'"></textarea>
+      <!-- Botón de guardar -->
+      <button type="button" (click)="addTask()"
+        class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        @if (updateTask) {
+        <span>Editar Tarea</span>
+        }@else {
+        <span>Guardar Tarea</span>
+        }
+
+      </button>
+    </form>
+  </div>
+  <div class="mb-8">
+    <h2 class="text-xl font-bold mb-4 text-gray-700">Resumen de Tareas</h2>
+    <div class="flex space-x-4">
+      <div class="flex-1 bg-gray-100 p-4 rounded-md shadow-md">
+        <h3 class="text-lg font-semibold">Total Tareas</h3>
+        <p class="text-2xl font-bold">{{ tasksCount.total }}</p>
+      </div>
+      <div class="flex-1 bg-green-100 p-4 rounded-md shadow-md">
+        <h3 class="text-lg font-semibold">Tareas Completadas</h3>
+        <p class="text-2xl font-bold">{{ tasksCount.completed }}</p>
+      </div>
+      <div class="flex-1 bg-red-100 p-4 rounded-md shadow-md">
+        <h3 class="text-lg font-semibold">Tareas Incompletas</h3>
+        <p class="text-2xl font-bold">{{ tasksCount.incomplete }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lista de Tareas -->
+  <div>
+    <h2 class="text-2xl font-bold mb-4 text-gray-700">Lista de Tareas</h2>
+    <ul class="space-y-4">
+      @for (task of tasks; track task.name) {
+      <li [ngClass]="getTaskClass(task.type)"
+        class="border border-gray-300 rounded-md p-4 flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+          <!-- Marca de completado -->
+          <input type="checkbox" (change)="toggleTaskCompletion(task)"
+            class="h-5 w-5 text-indigo-600 focus:ring-indigo-500" [checked]="task.isCompleted">
+          <a [ngClass]="{'line-through text-gray-500': task.isCompleted}" class="text-lg">
+            {{ task.name | uppercase }}
+          </a>
+          <span [ngClass]="{'line-through text-gray-500': task.isCompleted}" class="text-sm">
+            {{ task.description }}
+          </span>
+        </div>
+        <div class="flex space-x-2">
+          <!-- Botones de editar y eliminar -->
+          <button (click)="editTask(task)"
+            class="text-indigo-600 hover:text-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            Editar
+          </button>
+          <button (click)="deleteTask(task)"
+            class="text-red-600 hover:text-red-800 focus:outline-none focus:ring-2 focus:ring-red-500">
+            Eliminar
+          </button>
+        </div>
+      </li>
+
+      } @empty {
+      <li>No Tienes Tareas Creadas.</li>
+      }
+    </ul>
+  </div>
+</div>

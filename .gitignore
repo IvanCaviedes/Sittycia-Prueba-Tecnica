@@ -1,0 +1,52 @@
+# Visual Studio
+.vs/
+.vscode/
+*.code-workspace
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Auto-generated files
+Generated\ 
+Generated\* 
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+
+# NuGet Packages
+*.nupkg
+*.snupkg
+*.nuspec
+*.dll
+*.pdb
+*.mdb
+
+# MSBuild binaries
+*.dll
+*.exe
+*.appx
+*.appxupload
+
+# Publish output
+[Pp]ublish/
+*.publishsettings
+
+# Windows image file caches
+Thumbs.db
+
+# Logs
+*.log
