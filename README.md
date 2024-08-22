@@ -114,7 +114,7 @@ npm install -g @angular/cli
    ```bash
     export const environment = {
       production: false,
-      apiUrl: 'https://localhost:5001/api'
+      apiUrl: 'http://localhost:5090/api'
     };
    ```
 4. **Correr la aplicación:**
@@ -137,7 +137,7 @@ Para probar la API, puedes usar herramientas como Postman o curl. Asegúrate de 
 ### Ejemplo de solicitud con curl:
 
 ```bash
-curl -X GET "https://localhost:5001/api/tareas" -H "Authorization: Bearer TU_JWT_TOKEN"
+curl -X GET "http://localhost:5090/api/tareas" -H "Authorization: Bearer TU_JWT_TOKEN"
 ```
 
 ## Contribuciones
