@@ -1,12 +1,13 @@
 import { Routes } from '@angular/router';
-import { SignInComponent } from './modules/auth/sign-in/sign-in.component';
-import { SignUpComponent } from './modules/auth/sign-up/sign-up.component';
-import { LayoutComponent } from './layout/layout.component';
-import { TaskComponent } from './modules/admin/app/task/task.component';
-import { layout } from './layout/layout.types';
-import { noauthGuard } from './core/auth/guards/noauth.guard';
+
 import { authGuard } from './core/auth/guards/auth.guard';
+import { noauthGuard } from './core/auth/guards/noauth.guard';
+import { LayoutComponent } from './layout/layout.component';
+import { layout } from './layout/layout.types';
+import { TaskComponent } from './modules/admin/app/task/task.component';
+import { SignInComponent } from './modules/auth/sign-in/sign-in.component';
 import { SignOutComponent } from './modules/auth/sign-out/sign-out.component';
+import { SignUpComponent } from './modules/auth/sign-up/sign-up.component';
 
 export const routes: Routes = [
   {
@@ -57,8 +58,9 @@ export const routes: Routes = [
   {
     path: '',
     component: LayoutComponent,
+    canMatch: [authGuard],
     data: {
-      layout: 'empty' as layout,
+      layout: 'principal' as layout,
     },
     children: [
       {

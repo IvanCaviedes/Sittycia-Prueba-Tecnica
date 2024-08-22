@@ -1,1 +1,31 @@
-<p>sign-out works!</p>
+<div class="flex items-center justify-center min-h-screen bg-gray-100">
+  <div class="w-full max-w-md p-8 bg-white shadow-md rounded-lg relative">
+    <!-- Título -->
+    <div class="text-3xl font-bold text-gray-700 text-center">
+      ¡Has cerrado sesión!
+    </div>
+
+    <!-- Descripción -->
+    <div class="mt-3 text-center text-gray-600">
+      <!-- Temporizador de redirección -->
+      @if(countdown > 0){
+      <ng-container>
+        Redirigiendo en {{ countdown }}
+      </ng-container>
+      }@else{
+      <ng-container>
+        ¡Ahora estás siendo redirigido al login!
+      </ng-container>
+      }
+
+    </div>
+
+    <!-- Pie de página del formulario -->
+    <div class="mt-6 text-center text-sm text-gray-600">
+      <span>Ir a</span>
+      <a routerLink="/sign-in" class="ml-1 text-indigo-600 hover:underline font-medium">
+        iniciar sesión
+      </a>
+    </div>
+  </div>
+</div>

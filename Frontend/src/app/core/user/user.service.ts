@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, ReplaySubject } from 'rxjs';
+
 import { User } from './user.types';
 
 @Injectable({

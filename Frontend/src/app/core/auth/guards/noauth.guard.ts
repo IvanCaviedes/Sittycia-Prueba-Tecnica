@@ -1,7 +1,8 @@
 import { inject } from '@angular/core';
 import { CanMatchFn } from '@angular/router';
-import { AuthService } from '../auth.service';
 import { of, switchMap } from 'rxjs';
+
+import { AuthService } from '../auth.service';
 
 export const noauthGuard: CanMatchFn = (route, segments) => {
   const _authService = inject(AuthService);
