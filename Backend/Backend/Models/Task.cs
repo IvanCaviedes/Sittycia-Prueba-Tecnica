@@ -20,18 +20,20 @@ namespace Backend.Models
         public bool IsCompleted { get; set; } = false;
 
         [Required]
-        public int UserId { get; set; }
+        public string type { get; set; }
+
+        public int? UserId { get; set; }
 
         [ForeignKey("UserId")]
-        public User User { get; set; }
+        public User? User { get; set; }
 
         [DataType(DataType.DateTime)]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime? CreatedAt { get; set; } = DateTime.UtcNow;
 
         [DataType(DataType.DateTime)]
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
         public DateTime? DeletedAt { get; set; }
 

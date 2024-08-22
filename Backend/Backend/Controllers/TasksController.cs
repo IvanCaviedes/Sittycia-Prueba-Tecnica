@@ -24,8 +24,25 @@ namespace Backend.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Models.Task>>> GetTasks()
         {
-            var tasks = _context.Tasks.Include(t => t.User);
-            return await tasks.ToListAsync();
+            // Obtener el UserId del usuario autenticado
+            var userIdClaim = User.FindFirst("id");
+            if (userIdClaim == null)
+            {
+                return Unauthorized(new { Status = false, Message = "No se pudo identificar al usuario." });
+            }
+
+            if (!int.TryParse(userIdClaim.Value, out int userId))
+            {
+                return Unauthorized(new { Status = false, Message = "ID de usuario inválido." });
+            }
+
+            // Filtrar las tareas por UserId
+            var tasks = await _context.Tasks
+                                      .Where(t => t.UserId == userId)
+                                      .Include(t => t.User) // Incluir la relación User si es necesario
+                                      .ToListAsync();
+
+            return Ok(tasks);
         }
 
         // GET: api/Tasks/5
@@ -47,12 +64,30 @@ namespace Backend.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTask(int id, Models.Task task)
         {
-            if (id != task.Id)
+            var existingTask = await _context.Tasks.FindAsync(id);
+            if (existingTask == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
-            _context.Entry(task).State = EntityState.Modified;
+            if (!string.IsNullOrEmpty(task.Name))
+            {
+                existingTask.Name = task.Name;
+            }
+
+            if (!string.IsNullOrEmpty(task.Description))
+            {
+                existingTask.Description = task.Description;
+            }
+
+            if (!string.IsNullOrEmpty(task.type))
+            {
+                existingTask.type = task.type;
+            }
+
+            existingTask.IsCompleted = task.IsCompleted;
+            existingTask.UpdatedAt = DateTime.UtcNow;
+            _context.Entry(existingTask).State = EntityState.Modified;
 
             try
             {
@@ -70,7 +105,7 @@ namespace Backend.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(existingTask);
         }
 
         // POST: api/Tasks
@@ -78,6 +113,19 @@ namespace Backend.Controllers
         [HttpPost]
         public async Task<ActionResult<Models.Task>> PostTask(Models.Task task)
         {
+
+            var userIdClaim = User.FindFirst("id");
+            if (userIdClaim == null)
+            {
+                return Unauthorized(new { Status = false, Message = "No se pudo identificar al usuario." });
+            }
+
+            if (!int.TryParse(userIdClaim.Value, out int userId))
+            {
+                return Unauthorized(new { Status = false, Message = "ID de usuario inválido." });
+            }
+
+            task.UserId = userId;
             _context.Tasks.Add(task);
             await _context.SaveChangesAsync();
 
@@ -97,7 +145,7 @@ namespace Backend.Controllers
             _context.Tasks.Remove(task);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(task);
         }
 
         private bool TaskExists(int id)

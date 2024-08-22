@@ -1,1 +1,1 @@
-export type layout = 'empty' | 'centered';
+export type layout = 'empty' | 'principal';

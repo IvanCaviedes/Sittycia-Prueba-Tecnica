@@ -9,7 +9,6 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
-using NuGet.Common;
 
 namespace Backend.Controllers
 {
@@ -192,27 +191,27 @@ namespace Backend.Controllers
 
         }
 
-            private string GenerateJwtToken(User user)
+        private string GenerateJwtToken(User user)
         {
-            var claims = new[]
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.UTF8.GetBytes(_jwt.Key);
+            var tokenDescriptor = new SecurityTokenDescriptor
             {
-                new Claim(JwtRegisteredClaimNames.Sub, _jwt.Subject),
+                Subject = new ClaimsIdentity(new Claim[]
+     {
+new Claim(JwtRegisteredClaimNames.Sub, _jwt.Subject),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToUniversalTime().ToString()), // Usa UTC
                 new Claim("id", user.Id.ToString())
+     }),
+                Expires = DateTime.UtcNow.AddHours(1),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+                Issuer = _jwt.Issuer,
+                Audience = _jwt.Audience
             };
 
-            var key = Encoding.UTF8.GetBytes(_jwt.Key);
-            var signingKey = new SymmetricSecurityKey(key);
-            var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
-                _jwt.Issuer,
-                _jwt.Audience,
-                claims,
-                signingCredentials: signingCredentials);
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
         }
 
     }
